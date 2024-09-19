@@ -3,7 +3,7 @@ package besysoft.agendaApp.controller;
 import besysoft.agendaApp.dto.AuthenticationRequest;
 import besysoft.agendaApp.dto.AuthenticationResponse;
 import besysoft.agendaApp.dto.RegisterRequest;
-import besysoft.agendaApp.service.AuthenticationService;
+import besysoft.agendaApp.service.segurity.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
