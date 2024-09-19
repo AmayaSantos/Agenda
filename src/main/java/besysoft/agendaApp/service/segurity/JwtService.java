@@ -1,4 +1,4 @@
-package besysoft.agendaApp.service;
+package besysoft.agendaApp.service.segurity;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

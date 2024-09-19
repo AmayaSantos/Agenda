@@ -1,4 +1,4 @@
-package besysoft.agendaApp.service;
+package besysoft.agendaApp.service.segurity;
 
 import besysoft.agendaApp.dto.AuthenticationRequest;
 import besysoft.agendaApp.dto.AuthenticationResponse;

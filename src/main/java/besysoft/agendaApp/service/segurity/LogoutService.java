@@ -1,4 +1,4 @@
-package besysoft.agendaApp.service;
+package besysoft.agendaApp.service.segurity;
 
 import besysoft.agendaApp.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;

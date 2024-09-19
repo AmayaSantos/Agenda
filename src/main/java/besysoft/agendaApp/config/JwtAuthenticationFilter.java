@@ -1,13 +1,12 @@
 package besysoft.agendaApp.config;
 
 import besysoft.agendaApp.repository.TokenRepository;
-import besysoft.agendaApp.service.JwtService;
+import besysoft.agendaApp.service.segurity.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Comment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
