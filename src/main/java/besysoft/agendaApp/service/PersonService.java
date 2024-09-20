@@ -13,7 +13,7 @@ public interface PersonService {
 
     void delete(Integer personId);
 
-    void update(PersonDto personDto);
+    PersonDto update(PersonDto personDto);
 
     PersonDto get(Integer personId);
 

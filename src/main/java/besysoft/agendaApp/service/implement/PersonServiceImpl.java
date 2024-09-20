@@ -8,6 +8,8 @@ import besysoft.agendaApp.mappers.PersonMapper;
 import besysoft.agendaApp.model.Person;
 import besysoft.agendaApp.repository.PersonRepository;
 import besysoft.agendaApp.repository.specifications.PersonSpecification;
+import besysoft.agendaApp.service.PersonService;
+import besysoft.agendaApp.utils.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,10 +19,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PersonServiceImpl implements besysoft.agendaApp.service.PersonService {
+public class PersonServiceImpl implements PersonService {
 
     private final static Logger LOG = LoggerFactory.getLogger(PersonServiceImpl.class);
-    private PersonRepository personRepository;
+
+    private final PersonRepository personRepository;
+
+    public PersonServiceImpl(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     @Override
     public PersonDto create(PersonDto person) {
@@ -31,6 +38,8 @@ public class PersonServiceImpl implements besysoft.agendaApp.service.PersonServi
 
     @Override
     public Page<PersonDto> getAll(PersonFilterDto personFilter) {
+        Util.valid(personFilter);
+
         Pageable pageable = PageRequest.of(
                 personFilter.getPage(), personFilter.getSize());
         LOG.info("Se realizo una busqueda de Personas");
@@ -49,13 +58,13 @@ public class PersonServiceImpl implements besysoft.agendaApp.service.PersonServi
     }
 
     @Override
-    public void update(PersonDto personDto) {
+    public PersonDto update(PersonDto personDto) {
 
         Person person= findPerson(personDto.getId());
         person.updateBy(personDto);
         personRepository.save(person);
         LOG.info("Sea actualizado la Persona con id :{}", person.getId());
-
+        return PersonMapper.toDTO(person);
     }
 
     @Override
@@ -71,4 +80,5 @@ public class PersonServiceImpl implements besysoft.agendaApp.service.PersonServi
         return personRepository.findById(personId)
                 .orElseThrow(() -> new AppException(PersonError.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
+
 }

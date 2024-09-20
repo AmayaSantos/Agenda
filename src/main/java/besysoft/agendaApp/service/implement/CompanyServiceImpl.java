@@ -21,8 +21,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CompanyServiceImpl implements CompanyService {
     private final static Logger LOG = LoggerFactory.getLogger(CompanyServiceImpl.class);
-    private CompanyRepository companyRepository;
-    private PersonService personService;
+    private final CompanyRepository companyRepository;
+    private final PersonService personService;
+
+    public CompanyServiceImpl(CompanyRepository companyRepository, PersonService personService) {
+        this.companyRepository = companyRepository;
+        this.personService = personService;
+    }
+
     @Override
     public CompanyDto create(CompanyDto company) {
         Company save = companyRepository.save(CompanyMapper.toEntity(company));
