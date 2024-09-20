@@ -2,6 +2,7 @@ package besysoft.agendaApp.model;
 
 import besysoft.agendaApp.dto.CompanyDto;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +31,7 @@ public class Company {
     private Integer id;
     private String name;
     private String email;
+    @Column(name = "phone_number")
     private String phoneNumber;
     private String city;
     private String address;
