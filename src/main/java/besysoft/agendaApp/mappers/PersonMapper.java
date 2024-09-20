@@ -23,7 +23,6 @@ public class PersonMapper {
 
     public static Person toEntity(PersonDto person) {
         return Person.builder()
-                .id(person.getId())
                 .dni(person.getDni())
                 .city(person.getCity())
                 .email(person.getEmail())
