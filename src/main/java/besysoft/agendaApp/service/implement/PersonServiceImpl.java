@@ -8,6 +8,8 @@ import besysoft.agendaApp.mappers.PersonMapper;
 import besysoft.agendaApp.model.Person;
 import besysoft.agendaApp.repository.PersonRepository;
 import besysoft.agendaApp.repository.specifications.PersonSpecification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,16 +18,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PersonServiceImpl implements besysoft.agendaApp.service.PersonService {
+
+    private final static Logger LOG = LoggerFactory.getLogger(PersonServiceImpl.class);
     private PersonRepository personRepository;
+
     @Override
-    public void create(PersonDto person) {
-        personRepository.save(PersonMapper.toEntity(person));
+    public PersonDto create(PersonDto person) {
+        Person save = personRepository.save(PersonMapper.toEntity(person));
+        LOG.info("Persona creada con id :{}", save.getId());
+        return PersonMapper.toDTO(save);
     }
 
     @Override
     public Page<PersonDto> getAll(PersonFilterDto personFilter) {
         Pageable pageable = PageRequest.of(
                 personFilter.getPage(), personFilter.getSize());
+        LOG.info("Se realizo una busqueda de Personas");
         return personRepository
                 .findAll(PersonSpecification.fullName(personFilter.getFullName())
                         .and(PersonSpecification.inCities(personFilter.getCitiesNames())),
@@ -37,6 +45,7 @@ public class PersonServiceImpl implements besysoft.agendaApp.service.PersonServi
     public void delete(Integer personId) {
         Person person= findPerson(personId);
         personRepository.delete(person);
+        LOG.info("Sea Borrado la Persona con id :{}", person.getId());
     }
 
     @Override
@@ -45,6 +54,8 @@ public class PersonServiceImpl implements besysoft.agendaApp.service.PersonServi
         Person person= findPerson(personDto.getId());
         person.updateBy(personDto);
         personRepository.save(person);
+        LOG.info("Sea actualizado la Persona con id :{}", person.getId());
+
     }
 
     @Override
@@ -56,6 +67,7 @@ public class PersonServiceImpl implements besysoft.agendaApp.service.PersonServi
 
     @Override
     public Person findPerson(Integer personId) {
+        LOG.info("Sea buscado la Persona con id :{}", personId);
         return personRepository.findById(personId)
                 .orElseThrow(() -> new AppException(PersonError.PERSON_NOT_FOUND, HttpStatus.NOT_FOUND));
     }
