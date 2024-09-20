@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 
 public interface PersonService {
 
-    void create(PersonDto person);
+    PersonDto create(PersonDto person);
 
     Page<PersonDto> getAll(PersonFilterDto pageFilter);
 
