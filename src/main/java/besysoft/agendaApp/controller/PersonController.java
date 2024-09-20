@@ -18,13 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/person")
+@RequiredArgsConstructor
 public class PersonController {
 
     private PersonService personService;
 
     @PostMapping
     public ResponseEntity<String> create(PersonDto person) {
-        return new ResponseEntity<>(personService.create(person), HttpStatus.OK);
+        personService.create(person);
+        return new ResponseEntity<>( HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -33,17 +35,19 @@ public class PersonController {
     }
 
     @GetMapping("/{personId}")
-    public ResponseEntity<String> get(@PathVariable Integer personId) {
+    public ResponseEntity<PersonDto> get(@PathVariable Integer personId) {
         return new ResponseEntity<>(personService.get(personId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{personId}")
-    public ResponseEntity<String> delete(@PathVariable Integer personId) {
-        return new ResponseEntity<>(personService.delete(personId), HttpStatus.OK);
+    public ResponseEntity<Void> delete(@PathVariable Integer personId) {
+        personService.delete(personId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<String> update(@RequestBody PersonDto personDto) {
-        return new ResponseEntity<>(personService.update( personDto), HttpStatus.OK);
+    public ResponseEntity<Void> update(@RequestBody PersonDto personDto) {
+        personService.update( personDto);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

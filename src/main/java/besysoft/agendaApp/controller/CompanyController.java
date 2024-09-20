@@ -3,6 +3,7 @@ package besysoft.agendaApp.controller;
 import besysoft.agendaApp.dto.CompanyDto;
 import besysoft.agendaApp.dto.CompanyFilterDto;
 import besysoft.agendaApp.service.CompanyService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/company")
+@RequiredArgsConstructor
 public class CompanyController {
     
     private CompanyService companyService;
 
     @PostMapping
-    public ResponseEntity<String> create(CompanyDto company) {
+    public ResponseEntity<CompanyDto> create(CompanyDto company) {
         return new ResponseEntity<>(companyService.create(company), HttpStatus.OK);
     }
 
@@ -32,27 +34,28 @@ public class CompanyController {
     }
 
     @GetMapping("/{personId}")
-    public ResponseEntity<String> get(@PathVariable Integer personId) {
-        return new ResponseEntity<>(companyService.get(personId), HttpStatus.OK);
+    public ResponseEntity<CompanyDto> get(@PathVariable Integer companyId) {
+        return new ResponseEntity<>(companyService.get(companyId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{personId}")
-    public ResponseEntity<String> delete(@PathVariable Integer personId) {
-        return new ResponseEntity<>(companyService.delete(personId), HttpStatus.OK);
+    public ResponseEntity<Void> delete(@PathVariable Integer companyId) {
+        companyService.delete(companyId);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<String> update(@RequestBody CompanyDto CompanyDto) {
+    public ResponseEntity<CompanyDto> update(@RequestBody CompanyDto CompanyDto) {
         return new ResponseEntity<>(companyService.update( CompanyDto), HttpStatus.OK);
     }
 
     @PostMapping("/{companyId}/contact/{personId}")
-    public ResponseEntity<String> addPerson(@PathVariable Integer personId ,@PathVariable Integer companyId ) {
+    public ResponseEntity<CompanyDto> addPerson(@PathVariable Integer personId ,@PathVariable Integer companyId ) {
         return new ResponseEntity<>(companyService.addContact(companyId,personId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{companyId}/contact/{personId}")
-    public ResponseEntity<String> removePerson(@PathVariable Integer personId, @PathVariable Integer companyId  ) {
+    public ResponseEntity<CompanyDto> removePerson(@PathVariable Integer personId, @PathVariable Integer companyId  ) {
         return new ResponseEntity<>(companyService.removeContact(companyId,personId), HttpStatus.OK);
     }
 }
