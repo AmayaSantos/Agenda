@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,13 +28,13 @@ public class PersonServiceTest {
     @Test
     public void findReadyExistPerson() {
         Person person = personService.findPerson(1);
-        assertEquals(person.getName(), "userToFind");
+        assertEquals(person.getName(), "personToFind");
     }
 
     @Test
     public void findReadyExistPersonInDto() {
         PersonDto person = personService.get(1);
-        assertEquals(person.getName(), "userToFind");
+        assertEquals(person.getName(), "personToFind");
     }
 
     @Test
@@ -57,7 +59,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void corredDataPersonInCreation() {
+    public void correctDataPersonInCreation() {
         PersonDto personToCreate= new PersonDto(null,2323L,"othernew2","othernew2","othernew2","othernew2","othernew2","othernew2");
 
         PersonDto personCreated = personService.create(personToCreate);
@@ -68,11 +70,29 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void seachPerson() {
+    public void searchPersonByCity() {
+        PersonDto personToCreate= new PersonDto(null,2323L,"recentCreated","recentCreated","recentCreated","recentCreated","recentCreated","recentCreated");
+        PersonDto personCreated = personService.create(personToCreate);
+
+
         PersonFilterDto filtro= new PersonFilterDto();
+        filtro.setCitiesNames(List.of("recentCreated"));
+        filtro.setPage(0);
+        filtro.setSize(1);
+
+        PersonDto persona=personService.getAll(filtro).toList().get(0);
+
+        assertEquals(persona.getCity(), personToCreate.getCity());
+    }
+
+    @Test
+    public void searchPersonFail() {
+        PersonFilterDto filtro= new PersonFilterDto();
+
         AppException exception = assertThrows(AppException.class, () ->
                 personService.getAll(filtro));
-        assertEquals(PersonError.PERSON_NOT_FOUND.getMessage(), exception.getMessage());
+
+        assertEquals("must not be null, must not be null, ", exception.getMessage());
     }
 
     @Test
