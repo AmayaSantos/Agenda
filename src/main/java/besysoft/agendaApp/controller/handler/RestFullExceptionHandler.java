@@ -2,6 +2,7 @@ package besysoft.agendaApp.controller.handler;
 
 import besysoft.agendaApp.dto.ProcessMensage;
 import besysoft.agendaApp.exeptions.AppException;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-
+@Hidden
 @ControllerAdvice
 public class RestFullExceptionHandler {
 
