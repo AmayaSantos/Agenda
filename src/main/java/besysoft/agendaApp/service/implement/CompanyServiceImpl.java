@@ -10,6 +10,7 @@ import besysoft.agendaApp.model.Person;
 import besysoft.agendaApp.repository.CompanyRepository;
 import besysoft.agendaApp.service.CompanyService;
 import besysoft.agendaApp.service.PersonService;
+import besysoft.agendaApp.utils.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Page<CompanyDto> getAll(CompanyFilterDto companyFilter) {
+        Util.valid(companyFilter);
         Pageable pageable = PageRequest.of(
                 companyFilter.getPage(), companyFilter.getSize());
         LOG.info("Se realizo una busqueda de Empresas");
