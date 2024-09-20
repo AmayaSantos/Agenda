@@ -1,5 +1,6 @@
 package besysoft.agendaApp.model;
 
+import besysoft.agendaApp.dto.PersonDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,4 +29,13 @@ public class Person {
     private String city;
     private String address;
 
+    public void updateBy(PersonDto person) {
+        this.dni= person.getDni();
+        this.name= person.getName();
+        this.surname= person.getSurname();
+        this.email= person.getEmail();
+        this.phoneNumber= person.getPhoneNumber();
+        this.city= person.getCity();
+        this.address= person.getAddress();
+    }
 }
