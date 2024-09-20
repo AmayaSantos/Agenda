@@ -24,9 +24,8 @@ public class PersonController {
     private PersonService personService;
 
     @PostMapping
-    public ResponseEntity<String> create(PersonDto person) {
-        personService.create(person);
-        return new ResponseEntity<>( HttpStatus.CREATED);
+    public ResponseEntity<PersonDto> create(PersonDto person) {
+        return new ResponseEntity<>(personService.create(person), HttpStatus.CREATED);
     }
 
     @GetMapping
