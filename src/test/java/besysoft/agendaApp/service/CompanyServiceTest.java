@@ -2,6 +2,7 @@ package besysoft.agendaApp.service;
 
 import besysoft.agendaApp.dto.CompanyDto;
 import besysoft.agendaApp.dto.CompanyFilterDto;
+import besysoft.agendaApp.dto.PersonDto;
 import besysoft.agendaApp.exeptions.AppException;
 import besysoft.agendaApp.exeptions.errores.CompanyError;
 import besysoft.agendaApp.service.implement.CompanyServiceImpl;
@@ -37,39 +38,39 @@ public class CompanyServiceTest {
 
     @Test
     public void createCompanyWithCompanyDto() {
-        CompanyDto personToCreate= new CompanyDto(100000,"new","new","new","new","new",null);
-        CompanyDto Company = companyService.create(personToCreate);
+        CompanyDto companyToCreate= new CompanyDto(100000,"new","new","new","new","new",null);
+        CompanyDto Company = companyService.create(companyToCreate);
 
-        CompanyDto personSaved= companyService.get(Company.getId());
-        assertEquals(personSaved.getId(),Company.getId());
+        CompanyDto companySaved= companyService.get(Company.getId());
+        assertEquals(companySaved.getId(),Company.getId());
     }
 
 
     @Test
     public void dontSelectIdInCreationOnCompany() {
-        CompanyDto personToCreate= new CompanyDto(100000,"othernew","othernew","othernew","othernew","othernew",null);
+        CompanyDto companyToCreate= new CompanyDto(100000,"othernew","othernew","othernew","othernew","othernew",null);
 
-        CompanyDto Company = companyService.create(personToCreate);
-        CompanyDto personSaved= companyService.get(Company.getId());
+        CompanyDto Company = companyService.create(companyToCreate);
+        CompanyDto companyCreated= companyService.get(Company.getId());
 
-        assertNotEquals(personToCreate.getId(),Company.getId());
+        assertNotEquals(companyToCreate.getId(),Company.getId());
     }
 
     @Test
     public void correctDataCompanyInCreation() {
         CompanyDto companyDto= new CompanyDto(null,"othernew2","othernew2","othernew2","othernew2","othernew2",new HashSet<>());
 
-        CompanyDto personCreated = companyService.create(companyDto);
+        CompanyDto companyToCreate = companyService.create(companyDto);
 
         //only diff in ids
-        companyDto.setId(personCreated.getId());
-        assertEquals(companyDto,personCreated);
+        companyDto.setId(companyToCreate.getId());
+        assertEquals(companyDto,companyToCreate);
     }
 
     @Test
     public void searchCompanyByCity() {
-        CompanyDto personToCreate= new CompanyDto(null,"recentCreated","recentCreated","recentCreated","recentCreated","recentCreated",null);
-        CompanyDto personCreated = companyService.create(personToCreate);
+        CompanyDto companyToCreate= new CompanyDto(null,"recentCreated","recentCreated","recentCreated","recentCreated","recentCreated",null);
+        CompanyDto companyCreated = companyService.create(companyToCreate);
 
 
         CompanyFilterDto filter= new CompanyFilterDto();
@@ -100,5 +101,25 @@ public class CompanyServiceTest {
         AppException exception = assertThrows(AppException.class, () ->
                 companyService.get(2));
         assertEquals(CompanyError.COMPANY_NOT_FOUND.getMessage(), exception.getMessage());
+    }
+
+    @Test
+    public void AddContact() {
+
+        CompanyDto companyToCreate = companyService.addContact(3,3);
+
+        Boolean containsPersonWithId=companyToCreate.getContacts().stream().map(PersonDto::getId).anyMatch(integer -> integer.equals(3));
+
+        assertTrue(containsPersonWithId);
+    }
+
+    @Test
+    public void removeContact() {
+        companyService.addContact(4,4);
+        CompanyDto companyToCreate = companyService.removeContact(4,4);
+
+        Boolean containsPersonWithId=companyToCreate.getContacts().stream().map(PersonDto::getId).anyMatch(integer -> integer.equals(3));
+
+        assertFalse(containsPersonWithId);
     }
 }
